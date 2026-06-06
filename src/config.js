@@ -3,15 +3,17 @@
 //  НЕ КОММИТЬТЕ РЕАЛЬНЫЕ КЛЮЧИ В GITHUB!
 // =============================================
 
-const MAPBOX_TOKEN = 'YOUR_MAPBOX_TOKEN_HERE';
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiZGFyeW4xIiwiYSI6ImNtcGR2ZzZ4ajBoYmUydHIyaG5pd2o4cTgifQ.mo3pO5tFlskUY9gUbAdlyw';
 
 const FIREBASE_CONFIG = {
-  apiKey:            "YOUR_FIREBASE_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey: "AIzaSyCbCbrteNzHxtkMrXtt9jWWYsaN7hP1JiU",
+  authDomain: "gps-animals.firebaseapp.com",
+  databaseURL: "https://gps-animals-default-rtdb.firebaseio.com",
+  projectId: "gps-animals",
+  storageBucket: "gps-animals.firebasestorage.app",
+  messagingSenderId: "58735998155",
+  appId: "1:58735998155:web:2b3a84dfcfd1e559dd574e",
+  measurementId: "G-D17DTKXKZN"
 };
 
 // Расстояние (в метрах), при котором показывается предупреждение
