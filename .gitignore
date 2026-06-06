@@ -1,0 +1,17 @@
+# Зависимости
+node_modules/
+
+# Конфиги с ключами — НИКОГДА не коммитьте!
+# src/config.js  <-- раскомментируйте если храните реальные ключи там
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+*.suo
+*.user

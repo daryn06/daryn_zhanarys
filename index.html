@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐄 РодАлерт — Животные на дороге</title>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <span class="logo-icon">⚠️</span>
+      <span class="logo-text">РодАлерт</span>
+    </div>
+    <div class="topbar-status" id="statusBadge">
+      <span class="dot"></span> Онлайн
+    </div>
+  </header>
+
+  <!-- MAP -->
+  <div id="map"></div>
+
+  <!-- SPEED WARNING OVERLAY -->
+  <div id="speedWarning" class="speed-warning hidden">
+    <div class="sw-icon" id="warningIcon">🐄</div>
+    <div class="sw-text">
+      <strong id="warningTitle">Внимание!</strong>
+      <span id="warningDesc">Животное на дороге — снизьте скорость!</span>
+    </div>
+    <button class="sw-close" onclick="dismissWarning()">✕</button>
+  </div>
+
+  <!-- SIDEBAR PANEL -->
+  <div class="panel" id="panel">
+    <div class="panel-header">
+      <h2>Добавить опасность</h2>
+      <button class="panel-toggle" id="panelToggle" onclick="togglePanel()">▲</button>
+    </div>
+    <div class="panel-body" id="panelBody">
+      <p class="hint">Нажмите на карту или используйте кнопку ниже</p>
+
+      <div class="animal-grid" id="animalGrid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="selected-animal" id="selectedAnimalLabel">Выберите животное</div>
+
+      <button class="btn-report" id="btnReport" onclick="startPinMode()">
+        📍 Отметить на карте
+      </button>
+
+      <button class="btn-report btn-myloc" onclick="reportAtMyLocation()">
+        📡 Моё местоположение
+      </button>
+
+      <hr />
+
+      <h3 style="margin:0 0 8px">Последние сигналы</h3>
+      <ul class="feed" id="feedList">
+        <li class="feed-empty">Пока нет сигналов...</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PIN MODE HINT -->
+  <div class="pin-hint hidden" id="pinHint">
+    🖱️ Нажмите на карту, чтобы отметить место
+    <button onclick="cancelPinMode()">Отмена</button>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Mapbox GL -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <script src="src/config.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
