@@ -10,7 +10,6 @@
 </head>
 <body>
 
-<!-- ═══ SPLASH ═══ -->
 <div id="splash">
   <div class="splash-inner">
     <div class="splash-icon">⚠️</div>
@@ -22,19 +21,16 @@
   </div>
 </div>
 
-<!-- ═══ TOPBAR ═══ -->
 <header class="topbar">
   <div class="topbar-logo"><span>⚠️</span><span class="logo-text">РодАлерт</span></div>
   <div class="topbar-right">
     <div class="topbar-status" id="statusBadge"><span class="dot"></span> Загрузка...</div>
-    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Сменить тему">☀️</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️</button>
   </div>
 </header>
 
-<!-- ═══ MAP ═══ -->
 <div id="map"></div>
 
-<!-- ═══ SPEED WARNING ═══ -->
 <div id="speedWarning" class="speed-warning hidden">
   <div class="sw-icon" id="warningIcon">🐄</div>
   <div class="sw-text">
@@ -44,16 +40,10 @@
   <button class="sw-close" onclick="dismissWarning()">✕</button>
 </div>
 
-<!-- ═══ FAB ═══ -->
 <button class="fab" onclick="openPanel()">🐾 Добавить</button>
+<button class="cam-fab" onclick="openCamera()" title="AI камера">📷</button>
 
-<!-- ═══ CAMERA BUTTON (всегда виден) ═══ -->
-<button class="cam-fab" onclick="openCamera()" title="Распознать животное камерой">📷</button>
-
-<!-- ═══ PANEL OVERLAY ═══ -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
-
-<!-- ═══ PANEL ═══ -->
 <div class="panel" id="panel">
   <div class="panel-handle" onclick="togglePanel()"><div class="handle-bar"></div></div>
   <div class="panel-header">
@@ -61,82 +51,51 @@
     <button class="panel-close" onclick="closePanel()">✕</button>
   </div>
   <div class="panel-body">
-    <p class="hint">Выберите животное, затем нажмите кнопку</p>
-
-    <!-- Кнопка камеры внутри панели -->
-    <button class="btn-camera" onclick="openCamera()">
-      📷 Распознать через камеру (AI)
-    </button>
-
+    <button class="btn-camera" onclick="openCamera()">📷 AI камера — авто-распознавание</button>
     <div class="divider-text">— или выберите вручную —</div>
-
     <div class="animal-grid" id="animalGrid"></div>
     <div class="selected-animal" id="selectedAnimalLabel">Выберите животное ↑</div>
     <button class="btn-report" onclick="startPinMode()">📍 Отметить на карте</button>
     <button class="btn-report btn-myloc" onclick="reportAtMyLocation()">📡 Моё местоположение</button>
     <hr/>
     <h3>Последние сигналы</h3>
-    <ul class="feed" id="feedList">
-      <li class="feed-empty">Пока нет сигналов...</li>
-    </ul>
+    <ul class="feed" id="feedList"><li class="feed-empty">Пока нет сигналов...</li></ul>
   </div>
 </div>
 
-<!-- ═══ PIN HINT ═══ -->
 <div class="pin-hint hidden" id="pinHint">
   🖱️ Нажмите на карту чтобы отметить место
   <button onclick="cancelPinMode()">Отмена</button>
 </div>
 
-<!-- ═══ CAMERA MODAL ═══ -->
+<!-- CAMERA MODAL — упрощённый -->
 <div class="camera-modal hidden" id="cameraModal">
   <div class="cam-inner">
-
     <div class="cam-header">
       <span class="cam-title">📷 AI Камера</span>
       <button class="cam-close" onclick="closeCamera()">✕</button>
     </div>
-
     <div class="cam-status" id="camStatus">Инициализация...</div>
-
-    <!-- Видео + canvas поверх -->
     <div class="cam-video-wrap">
       <video id="camVideo" autoplay playsinline muted></video>
       <canvas id="camCanvas"></canvas>
     </div>
-
-    <!-- Результат детекции -->
-    <div class="cam-detected hidden" id="camDetected">
-      <span class="cam-det-emoji" id="camDetectedEmoji">🐄</span>
-      <div class="cam-det-info">
-        <strong id="camDetectedLabel">Корова</strong>
-        <span id="camDetectedScore">Уверенность: 0%</span>
-      </div>
-    </div>
-
-    <div class="cam-actions">
-      <button class="cam-confirm" id="camConfirmBtn" onclick="confirmCameraDetection()" disabled>
-        ✅ Отметить на карте
-      </button>
-      <button class="cam-cancel" onclick="closeCamera()">Закрыть</button>
-    </div>
-
     <div class="cam-hint">
-      Наведите камеру на животное — AI автоматически его распознает
+      🤖 AI автоматически ставит метку когда видит животное (уверенность ≥55%)
+    </div>
+    <div class="cam-actions">
+      <button class="cam-cancel" onclick="closeCamera()">✕ Закрыть</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ SUCCESS TOAST ═══ -->
 <div class="cam-toast hidden" id="camToast">
-  <span id="camToastText">🐄 Корова отмечена на карте!</span>
+  <span id="camToastText">🐄 Метка поставлена!</span>
 </div>
 
-<!-- Scripts -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
-<!-- TensorFlow.js + COCO-SSD -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
 <script src="src/config.js"></script>
