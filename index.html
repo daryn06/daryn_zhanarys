@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <title>🐎 Animal Detection</title>
+  <title>🐄 РодАлерт — Животные на дороге</title>
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="src/style.css"/>
 </head>
 <body>
 
-<!-- ═══ SPLASH SCREEN ═══ -->
+<!-- ═══ SPLASH ═══ -->
 <div id="splash">
   <div class="splash-inner">
-    <div class="splash-icon">🐎</div>
-    <div class="splash-title">Animal Detection</div>
+    <div class="splash-icon">⚠️</div>
+    <div class="splash-title">РодАлерт</div>
     <div class="splash-sub">Животные на дороге</div>
     <div class="splash-animals">🐄 🐎 🐪 🦌 🐗</div>
     <div class="splash-loader"><div class="splash-bar"></div></div>
@@ -24,10 +24,7 @@
 
 <!-- ═══ TOPBAR ═══ -->
 <header class="topbar">
-  <div class="topbar-logo">
-    <span>⚠️</span>
-    <span class="logo-text">Animal Detection</span>
-  </div>
+  <div class="topbar-logo"><span>⚠️</span><span class="logo-text">РодАлерт</span></div>
   <div class="topbar-right">
     <div class="topbar-status" id="statusBadge"><span class="dot"></span> Загрузка...</div>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Сменить тему">☀️</button>
@@ -47,11 +44,16 @@
   <button class="sw-close" onclick="dismissWarning()">✕</button>
 </div>
 
-<!-- ═══ FAB (mobile open panel) ═══ -->
-<button class="fab" onclick="openPanel()" id="fab">🐾 Добавить</button>
+<!-- ═══ FAB ═══ -->
+<button class="fab" onclick="openPanel()">🐾 Добавить</button>
+
+<!-- ═══ CAMERA BUTTON (всегда виден) ═══ -->
+<button class="cam-fab" onclick="openCamera()" title="Распознать животное камерой">📷</button>
+
+<!-- ═══ PANEL OVERLAY ═══ -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
 
 <!-- ═══ PANEL ═══ -->
-<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
 <div class="panel" id="panel">
   <div class="panel-handle" onclick="togglePanel()"><div class="handle-bar"></div></div>
   <div class="panel-header">
@@ -60,6 +62,14 @@
   </div>
   <div class="panel-body">
     <p class="hint">Выберите животное, затем нажмите кнопку</p>
+
+    <!-- Кнопка камеры внутри панели -->
+    <button class="btn-camera" onclick="openCamera()">
+      📷 Распознать через камеру (AI)
+    </button>
+
+    <div class="divider-text">— или выберите вручную —</div>
+
     <div class="animal-grid" id="animalGrid"></div>
     <div class="selected-animal" id="selectedAnimalLabel">Выберите животное ↑</div>
     <button class="btn-report" onclick="startPinMode()">📍 Отметить на карте</button>
@@ -78,10 +88,59 @@
   <button onclick="cancelPinMode()">Отмена</button>
 </div>
 
+<!-- ═══ CAMERA MODAL ═══ -->
+<div class="camera-modal hidden" id="cameraModal">
+  <div class="cam-inner">
+
+    <div class="cam-header">
+      <span class="cam-title">📷 AI Камера</span>
+      <button class="cam-close" onclick="closeCamera()">✕</button>
+    </div>
+
+    <div class="cam-status" id="camStatus">Инициализация...</div>
+
+    <!-- Видео + canvas поверх -->
+    <div class="cam-video-wrap">
+      <video id="camVideo" autoplay playsinline muted></video>
+      <canvas id="camCanvas"></canvas>
+    </div>
+
+    <!-- Результат детекции -->
+    <div class="cam-detected hidden" id="camDetected">
+      <span class="cam-det-emoji" id="camDetectedEmoji">🐄</span>
+      <div class="cam-det-info">
+        <strong id="camDetectedLabel">Корова</strong>
+        <span id="camDetectedScore">Уверенность: 0%</span>
+      </div>
+    </div>
+
+    <div class="cam-actions">
+      <button class="cam-confirm" id="camConfirmBtn" onclick="confirmCameraDetection()" disabled>
+        ✅ Отметить на карте
+      </button>
+      <button class="cam-cancel" onclick="closeCamera()">Закрыть</button>
+    </div>
+
+    <div class="cam-hint">
+      Наведите камеру на животное — AI автоматически его распознает
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SUCCESS TOAST ═══ -->
+<div class="cam-toast hidden" id="camToast">
+  <span id="camToastText">🐄 Корова отмечена на карте!</span>
+</div>
+
+<!-- Scripts -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<!-- TensorFlow.js + COCO-SSD -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
 <script src="src/config.js"></script>
 <script src="src/app.js"></script>
+<script src="src/camera.js"></script>
 </body>
 </html>
