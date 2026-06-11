@@ -205,7 +205,7 @@ function processAutoPlace(predictions) {
     const animal = COCO_TO_ANIMAL[pred.class];
     if (!animal) return;
     const score = pred.score * 100;
-    if (score < 55) return; // минимум 55% уверенности
+    if (score < 40) return; // минимум 55% уверенности
 
     const now = Date.now();
     const last = lastAutoPlace[animal.id] || 0;
